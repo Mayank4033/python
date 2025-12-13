@@ -1,0 +1,12 @@
+Enter id to update data : Enter Name : Enter salary : Enter Mobile Number : Traceback (most recent call last):
+  File "D:\python\database\update_data.py", line 10, in <module>
+    cursor.execute(sql,values)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\MAYANK\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\cursor.py", line 551, in execute
+    self._handle_result(self._connection.cmd_query(stmt))
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\MAYANK\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 490, in cmd_query
+    result = self._handle_result(self._send_cmd(ServerCmd.QUERY, query))
+  File "C:\Users\MAYANK\AppData\Local\Programs\Python\Python313\Lib\site-packages\mysql\connector\connection.py", line 395, in _handle_result
+    raise errors.get_exception(packet)
+mysql.connector.errors.ProgrammingError: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'mohit'',mobile_no='30000' where id = '1234567890'' at line 1

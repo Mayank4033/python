@@ -1,13 +1,15 @@
 import yt_dlp
 
-url = "https://youtu.be/zyXmsVwZqX4?si=yqBkGjT79yORvneN"
+url = input("Paste YouTube URL: ")
+filename = input("Enter file name (without extension): ")
 
 ydl_opts = {
-    'outtmpl': 'Downloads/%(title)s.%(ext)s',
-       'format': 'best'
+    'format': 'bestvideo[height<=720]+bestaudio/best',  # 720p max
+    'outtmpl': f'Downloads/{filename}.%(ext)s',
+    'merge_output_format': 'mp4'  # ensures final file is mp4
 }
 
 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
     ydl.download([url])
 
-print("Download complete!")
+print("✅ Download complete!")
