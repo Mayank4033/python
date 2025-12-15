@@ -15,6 +15,7 @@ def run(sql,values=None,message=None):
         database.commit()
         print(message)
         key=input("Press enter to continue...")
+        return 1
     except mysql.connector.errors.ProgrammingError as error:
         print("oops something went wrong!")
         print(error)

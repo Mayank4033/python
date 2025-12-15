@@ -1,15 +1,28 @@
 import connection as con
 import shutil
 columns  = shutil.get_terminal_size().columns
+bill_total=0
 
 print("Saral Billing Software".center(columns))
 def display_bill_items():
-    sql="select i.id,productid,qty,p.price,name from item i,product p where i.productid=p.id"
+    global bill_total
+    bill_total=0
+    sql="select i.id,productid,qty,p.price,name from item i,product p where i.productid=p.id and i.billid=0"
     table=con.fetch(sql)
-    for row in table:
-        output=f"{row['id']:6} {row['productid']:6}{row['name']:30} {row['qty']:6} {row['price']:6}"
-        print(output)
-    key=input("Press enter to continue...")
+    if len(table)==0:
+        no_record_found()
+    else:
+        heading = f"{'ItemID':<8}{'Prod_ID':<8}{'Name':<20} {'Qty':<6} {'Price':<6} {'Total':<6}"
+        print(heading)
+        print("-" * len(heading))
+        itemcount=0
+        for row in table:
+            itemtotal=row['qty']*row['price']
+            output=f"{row['id']:<8} {row['productid']:<8}{row['name']:<20} {row['qty']:<6} {row['price']:<6} {itemtotal:<6}"
+            print(output)
+            bill_total=bill_total+(row['qty']*row['price'])
+            print(bill_total)
+        key=input("Press enter to continue...")
 def get_qty():
     qty=int(input(f"Enter quantity [Available stock is {table[0]['stock']}]: "))
     if qty==0 or qty>table[0]['stock']:
@@ -49,7 +62,6 @@ def display_products():
             start+=25
             key=input("Press enter to continue..")
         else:
-            # print("All products displayed!")
             break
 while True:
     print("Press 1 for Product Management")
@@ -155,7 +167,9 @@ while True:
                         else:   
                             sql="insert into item (productid,qty,price) values(%s,%s,%s)"
                             values=[product_id,qty,table[0]['price']]
-                            con.run(sql,values,'product added into bill!')
+                            res=con.run(sql,values,'product added into bill!')
+                            if res==1:
+                                break
             elif product_choice==2:
                 display_bill_items()
             elif product_choice==3:
@@ -171,9 +185,31 @@ while True:
                     values=[product_id]
                     con.run(sql,values,'Product Removed From Bill!')
             elif product_choice==4:
-                print("save and print bill")
+                '''
+                1) generate bill (insert new row into bill table)
+                2) update item table set billid using newly generated bill 
+                3) update stock inside product table
+                '''
+                if bill_total==0:
+                    no_record_found()
+                else:
+                    display_bill_items()
+                    fullname=input("Enter customer fullname : ")
+                    mobile=input("Enter mobile no : ")
+                    mode=int(input("Enter mode of payment (1=cash,2=online,3=card,4=credit) : "))
+                    sql="insert into bill(fullname,mobile,amount,mode) values(%s,%s,%s,%s)"
+                    values=[fullname,mobile,bill_total,mode]
+                    con.run(sql,values,'Bill Generated')
+                    # 2
+                    sql="select LAST_INSERT_ID() as last_bill_id from bill"
+                    table=con.fetch(sql)
+                    last_bill_id=table[0]['last_bill_id']
+                    print(last_bill_id)
+                    sql="update item set billid=%s where billid=0"
+                    values=[last_bill_id]
+                    con.run(sql,values,'Item table updated!')
             elif product_choice==5:
-                print("get details of bill")
+                print("get details of bill between dates")
             elif product_choice==6:
                 print("search")
             elif product_choice==0:

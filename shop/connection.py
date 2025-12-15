@@ -8,7 +8,7 @@ except con.Errors as e:
     print(e.errno)
     print(e.msg)
 
-def run(sql,values,message):
+def run(sql,values=None,message=None):
     try:
         cursor=database.cursor()
         cursor.execute(sql,values)
