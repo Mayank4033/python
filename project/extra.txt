@@ -1,0 +1,42 @@
+display_products()
+                product_id=int(input("Enter id to add product into bill : "))
+                sql="select id,price,stock from product where id=%s"
+                values=[product_id]
+                table=con.fetch(sql,values)
+                if len(table)==0:
+                    no_record_found()
+                else:
+                    qty=get_qty() 
+                    while True:
+                        if qty==None:
+                            choice =""
+                            while True:
+                                choice = input("Want to enter quantity again(y/n)? : ").lower()
+                                if choice=='y':
+                                    qty=get_qty()
+                                    if qty!=None:
+                                        break
+                                elif choice=='n':
+                                    key = input("Press Enter to continue...")
+                                    break
+                                else:
+                                    print("Invalid choice")
+                    if qty==None and choice=='n':
+                        break
+                    else:   
+                        sql="insert into item (productid,qty,price) values(%s,%s,%s)"
+                        values=[product_id,qty,table[0]['price']]
+                        res=con.run(sql,values,'product added into bill!')
+                        if res==1:
+                            break
+def get_qty():
+    qty=int(input(f"Enter quantity [Available stock is {table[0]['stock']}]: "))
+    if qty==0 or qty>table[0]['stock']:
+        if qty==0:
+            print("Quantity must be more than zero!")
+            return None
+        else :
+            print(f"Not enough stock ! Available stock is {table[0]['stock']}")
+            return None
+    # key = input("Press Enter to continue...")
+    return qty

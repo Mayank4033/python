@@ -1,0 +1,89 @@
+(create table course(
+    id int primary key AUTO_INCREMENT,
+    title varchar(255) not null,
+    fees float not null,
+    duration varchar(255) not null,
+    description varchar(255) not null
+)
+
+create table batch(
+    id int primary key AUTO_INCREMENT,
+    course_id int not null,
+    startdate date not null,
+    enddate date not null,
+    class_time varchar(255) not null
+)
+
+create table subject(
+    id int primary key AUTO_INCREMENT,
+    course_id int not null,
+    title varchar(255) not null,
+    per_hour_rate decimal(10,2) not null 
+)
+
+create table teacher(
+    id int primary key AUTO_INCREMENT,
+    name varchar(255) not null,
+    mobile varchar(255)not null,
+    email varchar(255),
+    gender varchar(1) not null,
+    qualification varchar(255) not null,
+    experience varchar(255)
+)
+
+create table lecture(
+    id int primary key AUTO_INCREMENT,
+    teacher_id int not null,
+    subject_id int not null,
+    batch_id int not null,
+    duration varchar(255) not null,
+    amount decimal(10,2) not null,
+    lec_date date not null,
+    payment_id int not null
+)
+
+create table payment(
+    id int primary key AUTO_INCREMENT,
+    payment_date date not null,
+    teacher_id int not null,
+    amount decimal(10,2) not null
+)
+
+
+sql="select l.lec_id,count(l.batch_id)as batch_id,c.title from lecture l,course c,batch b where l.batch_id=b.batch_id and b.course_id=c.id and l.batch_id=%s and lec_date between %s and %s"
+
+
+try:
+                    print("Press 1 to generate batch wise lecture detail between given date")
+                    print("Press 2 generate batch wise lecture detail with total amount")
+                    print("Press 0 to return main menu ")
+                    choice=int(input("Enter your choice : "))
+                    if choice==1:
+                        display_batches()
+                        id=int(input("Enter batch id : "))
+                        sql="select batch_id from lecture where batch_id=%s"
+                        values=[id]
+                        table=con.fetch(sql,values)
+                        if len(table)==0:
+                            no_record_found()
+                        else:
+                            date1=input("Enter starting date : ")
+                            date2=input("Enter ending date : ")
+                            sql="SELECT COUNT(*) AS total_lectures, c.title FROM lecture l JOIN batch b ON l.batch_id = b.batch_id JOIN course c ON b.course_id = c.id WHERE l.batch_id = %s AND l.lec_date BETWEEN %s AND %s"
+                            values=[id,date1,date2]
+                            table=con.fetch(sql,values)
+                            if len(table)==0:
+                                no_record_found()
+                            else:
+                                result=table[0]['total_lectures']
+                                print(f"{'Lecture_id':12} {'Batch_Name':25 } {'Total_Lectures':15}")
+                                print("-"*columns)
+                                for row in table:
+                                    output=f"{row['lec_id']:12} {row['title']:25} {result:15}"
+                                    print(output)
+                    elif choice==0:
+                        break
+                    else:
+                        print("Invalid Choice!")
+                except ValueError:
+                    print("Input cannot be empty and must be numbers(0-2)")

@@ -8,14 +8,13 @@ except con.Errors as e:
     print(e.errno)
     print(e.msg)
 
-def run(sql,values=None,message=None):
+def run(sql,values,message=None):
     try:
         cursor=database.cursor()
         cursor.execute(sql,values)
         database.commit()
         print(message)
         key=input("Press enter to continue...")
-        return 1
     except mysql.connector.errors.ProgrammingError as error:
         print("oops something went wrong!")
         print(error)

@@ -23,17 +23,6 @@ def display_bill_items():
             bill_total=bill_total+(row['qty']*row['price'])
             print(bill_total)
         key=input("Press enter to continue...")
-def get_qty():
-    qty=int(input(f"Enter quantity [Available stock is {table[0]['stock']}]: "))
-    if qty==0 or qty>table[0]['stock']:
-        if qty==0:
-            print("Quantity must be more than zero!")
-            return None
-        else :
-            print(f"Not enough stock ! Available stock is {table[0]['stock']}")
-            return None
-    # key = input("Press Enter to continue...")
-    return qty
 def input_with_default(message,current_value):
     user_input=input(f"{message} [{current_value}]: ").strip()
     return current_value if user_input=="" else user_input
@@ -88,7 +77,7 @@ while True:
                 if len(table)==0:
                     no_record_found()
                 else:
-                    print("Type to change or press enter if no change")
+                    # print("Type to change or press enter if no change")
                     name=input_with_default("Enter name",table[0]['name'])
                     price=input_with_default("Enter price",table[0]['price'])
                     stock=input_with_default("Enter stock",table[0]['stock'])
@@ -140,50 +129,38 @@ while True:
             product_choice=int(input("Enter your choice : "))
             if product_choice==1:
                 display_products()
-                product_id=int(input("Enter id to add product into bill : "))
-                sql="select id,price,stock from product where id=%s"
-                values=[product_id]
-                table=con.fetch(sql,values)
-                if len(table)==0:
-                    no_record_found()
+                productid = int(input("Enter product id : "))
+                sql = 'select id,price,stock from product where id = %s'
+                values = [productid]
+                table = con.fetch(sql,values)
+                if len(table) == 0:
+                    display_no_record_found()
                 else:
-                    qty=get_qty() 
-                    while True:
-                        if qty==None:
-                            choice =""
-                            while True:
-                                choice = input("Want to enter quantity again(y/n)? : ").lower()
-                                if choice=='y':
-                                    qty=get_qty()
-                                    if qty!=None:
-                                        break
-                                elif choice=='n':
-                                    key = input("Press Enter to continue...")
-                                    break
-                                else:
-                                    print("Invalid choice")
-                        if choice=='n':
-                            break
-                        else:   
-                            sql="insert into item (productid,qty,price) values(%s,%s,%s)"
-                            values=[product_id,qty,table[0]['price']]
-                            res=con.run(sql,values,'product added into bill!')
-                            if res==1:
-                                break
+                    qty = int(input(f"Enter quantity [Available stock :{table[0]['stock']}]: "))
+                    if qty>table[0]['stock']:
+                        print("not enough stock, available stock is ",table[0]['stock'])
+                        key=input("Press Enter to continue...")
+                    else:
+                        sql = "insert into item (productid,qty,price) values (%s,%s,%s)"
+                        values = [productid,qty,table[0]['price']]
+                        con.run(sql,values,'Item added into bill')
             elif product_choice==2:
                 display_bill_items()
             elif product_choice==3:
-                display_bill_items()
-                product_id=int(input("Enter item id to delete : "))
-                sql="select id from item where id=%s"
-                values=[product_id]
-                table=con.fetch(sql,values)
-                if len(table)==0:
+                if bill_total==0:
                     no_record_found()
                 else:
-                    sql="delete from item where id=%s"
+                    display_bill_items()
+                    product_id=int(input("Enter item id to delete : "))
+                    sql="select id from item where id=%s"
                     values=[product_id]
-                    con.run(sql,values,'Product Removed From Bill!')
+                    table=con.fetch(sql,values)
+                    if len(table)==0:
+                        no_record_found()
+                    else:
+                        sql="delete from item where id=%s"
+                        values=[product_id]
+                        con.run(sql,values,'Product Removed From Bill!')
             elif product_choice==4:
                 '''
                 1) generate bill (insert new row into bill table)
