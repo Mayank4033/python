@@ -21,6 +21,7 @@ def display_lecture_info():
                 print(output)
             start+=25
             key=input("Press enter to continue.")
+            return table
         else:
             if start==0:
                 no_record_found()
@@ -362,35 +363,29 @@ while True:
                         sql="select teacher_id from teacher where isdeleted=0 and teacher_id=%s"
                         values=[teacher_id]
                         table=con.fetch(sql,values)
-                        if len(table)>0:                    
-                            display_subjects()    
-                            subject_id=int(input("Enter Subject_id : "))
-                            sql="select sub_id from subject where isdeleted=0 and sub_id=%s"
-                            values=[subject_id]
+                        if len(table)>0:     
+                            display_batches()
+                            batch_id=int(input("Enter Batch_id : "))
+                            sql="select batch_id from batch where isdeleted=0 and batch_id=%s"
+                            values=[batch_id]
                             table=con.fetch(sql,values)
                             if len(table)>0:
-                                display_batches()
-                                batch_id=int(input("Enter Batch_id : "))
-                                sql="select batch_id from batch where isdeleted=0 and batch_id=%s"
+                                sql="select b.course_id,s.sub_id,s.per_hour_rate from subject s,batch b where s.course_id=b.course_id and b.batch_id=%s"
                                 values=[batch_id]
                                 table=con.fetch(sql,values)
                                 if len(table)>0:
-                                    cursor=con.database.cursor()
+                                    subject_id=table[0]['sub_id']
+                                    per_hour_rate=table[0]['per_hour_rate']
                                     duration=int(input("Enter duration in hours : "))
-                                    lec_date=input("Enter Lecture Date(yyyy-mm-dd) : ")
-
-                                    rate="select per_hour_rate from subject where sub_id=%s"
-                                    values=[subject_id]
-                                    result=con.fetch(rate,values)
-                                    per_hour_rate=result[0]['per_hour_rate']
+                                    lec_date=input("Enter Lecture Date(yyyy-mm-dd) : " ) 
                                     print("Per Hour Rate : ",per_hour_rate)
                                     amount=per_hour_rate*duration
                                     values=[teacher_id,subject_id,batch_id,duration,amount,lec_date]
                                     con.run(sql1,values,'Data Inserted!')
                                 else:
-                                    print("Batch Id not found,enter valid id")
+                                    print("Subject Id not found,enter valid id")
                             else:
-                                print("Subject Id not found,enter valid id")
+                                print("Batch Id not found,enter valid id")
                         else:
                             print("Teacher Id not found,enter valid id")
                     elif choice==2:
@@ -404,32 +399,37 @@ while True:
         elif choice==6:
             sql1="insert into payment(payment_date,teacher_id,amount)values(%s,%s,%s)"
             try:
-                teacher_id=int(input("Enter Teacher Id : "))
-                sql="select teacher_id,amount from lecture where payment_id=0 and  teacher_id=%s"
-                values=[teacher_id]
-                table=con.fetch(sql,values)
-                if len(table)>0:
-                    date=input("Enter Payment Date : ")
-                    amount=0
-                    for row in table:
-                        amount+=row['amount']
-                    print("Total Amount : ",amount)
-                    choice=input("Do Payment(y/n)? : ").lower()
-                    if choice=='y':
-                        values=[date,teacher_id,amount]
-                        print("Payment Done!")
-                        con.run(sql1,values,'Data Inserted!')
-                        sql="select LAST_INSERT_ID() AS last_payment_id from payment"
-                        table=con.fetch(sql)
-                        last_payment_id=table[0]['last_payment_id']
-                        print("Payment_ID : ",last_payment_id)
-                        sql="update lecture set payment_id=%s where teacher_id=%s"
-                        values=[last_payment_id,teacher_id]
-                        con.run(sql,values,'Lecture Table Updated!')
-                    else:
-                        key=input("Press enter to return main menu.")
-                else:
-                    no_record_found()
+                print("Pending Payments!".center(columns))
+                print("-"*columns)
+                res=display_lecture_info()
+                proceed=True
+                if res is None:
+                    proceed=False
+                if proceed==True:
+                    teacher_id=int(input("Enter Teacher Id to pay : "))
+                    sql="select teacher_id,amount from lecture where payment_id=0 and  teacher_id=%s"
+                    values=[teacher_id]
+                    table=con.fetch(sql,values)
+                    if len(table)>0:
+                        date=input("Enter Payment Date : ")
+                        amount=0
+                        for row in table:
+                            amount+=row['amount']
+                        print("Total Amount : ",amount)
+                        choice=input("Do Payment(y/n)? : ").lower()
+                        if choice=='y':
+                            values=[date,teacher_id,amount]
+                            # print("Payment Done!")
+                            con.run(sql1,values,'Payment Done!')
+                            sql="select LAST_INSERT_ID() AS last_payment_id from payment"
+                            table=con.fetch(sql)
+                            last_payment_id=table[0]['last_payment_id']
+                            print("Payment_ID : ",last_payment_id)
+                            sql="update lecture set payment_id=%s where teacher_id=%s"
+                            values=[last_payment_id,teacher_id]
+                            con.run(sql,values,'Lecture Table Updated!')
+                        else:
+                            key=input("Press enter to return main menu.")
             except ValueError:
                 print("Input cannot be empty and also not string!")
         elif choice==7:
@@ -445,19 +445,28 @@ while True:
                     values=[id]
                     table=con.fetch(sql,values)
                     if len(table)==0:
-                        no_record_found()
+                        print(f"No lecture taken for batch {id}")
+                        key=input("Press enter to continue")
                     else:
                         date1=input("Enter starting date : ")
                         date2=input("Enter ending date : ")
-                        sql="select l.lec_id,count(l.batch_id)as batch_id,c.title from lecture l,course c,batch b where l.batch_id=b.batch_id and b.course_id=c.id and l.batch_id=%s and l.lec_date between %s and %s"
-                        values=[id,date1,date2]
+                        sql="select l.lec_id,l.batch_id,s.title from lecture l,subject s where l.lec_date BETWEEN %s and %s and l.subject_id=s.sub_id and l.batch_id=%s "
+                        values=[date1,date2,id]
+                        print('before query execute')
                         table=con.fetch(sql,values)
-                        result=table[0]['batch_id']
-                        print(f"{'Lecture_id':12} {'Batch_Name':25 } {'Total_Lectures':15}")
-                        print("-"*columns)
-                        for row in table:
-                            output=f"{row['lec_id']:12} {row['title']:25} {result:15}"
-                            print(output)
+                        
+                        if len(table)==0:
+                            print("No lecture between given range of date")
+                        else:
+                            # result=table[0]['total_lectures']
+                            print('we are here')
+                            print(f"{'Lecture_id':12} {'Batch_id':10} {'Batch_Name':25 } {'Total_Lectures':15}")
+                            print("-"*columns)
+                            print("hello")
+                            for row in table:
+                                output=f"{row['lec_id']:12} {row['batch_id']:10} {row['title']:25} "
+                                print(output)
+                            input=input("press enter to continue")
                 elif choice==0:
                     break
                 else:

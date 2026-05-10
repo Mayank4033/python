@@ -1,0 +1,20 @@
+import pandas as pd 
+s1 = pd.Series([50,-25,100,150,200,140])
+s2 = pd.Series([5,1,10,15,20,14])
+print(s1)
+print("Add\n",s1.add(10))
+print("Add\n",s1.add(s2))
+
+print("sub\n",s1.sub(10))
+print("sub\n",s1.sub(s2))
+
+print("mul\n",s1.mul(10))
+print("mul\n",s1.mul(s2))
+
+print("div\n",s1.div(10))
+print("div\n",s1.div(s2))
+
+print(s1.mean())
+print(s1.sum())
+print(s1.median())
+print(s1.pow(2))

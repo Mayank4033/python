@@ -1,0 +1,10 @@
+import pandas as pd 
+s1 = pd.Series([100,20,30,40,10,20,30,40])
+print(s1)
+print(s1.duplicated())
+s2=s1.drop_duplicates()
+print(s2)
+print(s2.cumsum())
+print(s2.cumprod())
+print(s2.replace(100,10))
+print(s2.clip(10,40))

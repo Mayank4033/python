@@ -1,0 +1,15 @@
+import numpy as np 
+arr = np.array([10,20,30,40,64])
+arr2=np.array([2,5,6,8,10])
+
+print(arr+arr2)
+print(arr-arr2)
+print(arr*arr2)
+print(arr/arr2)
+print(arr + 10 )
+print(arr/5)
+print(np.log(arr))
+print(np.sin(arr))
+print(np.cos(arr))
+print(np.cosh(arr))
+print(np.sqrt(arr))

@@ -34,8 +34,8 @@ create table teacher(
 create table lecture(
     id int primary key AUTO_INCREMENT,
     teacher_id int not null,
-    subject_id int not null,
     batch_id int not null,
+    subject_id int not null,
     duration varchar(255) not null,
     amount decimal(10,2) not null,
     lec_date date not null,
@@ -87,3 +87,15 @@ try:
                         print("Invalid Choice!")
                 except ValueError:
                     print("Input cannot be empty and must be numbers(0-2)")
+
+
+select course_id from batch where batch_id=%s 
+select b.course_id,s.subject_id,s.title,s.per_hour_rate from subject s,batch b where b.course_id=s.course_id and batch_id=%s
+
+
+select lec_id,batch_id,count(*)as total_lectures from lecture where batch_id=46 and lec_date BETWEEN '2026-01-10' and '2026-01-20';
+select s.title from subject s,lecture l where l.subject_id=s.sub_id and l.batch_id=46;
+
+select lec_id,l.batch_id,count(*)as total_lectures,s.title from lecture l,subject s where lec_date BETWEEN '2026-01-10' and '2026-01-20' and l.subject_id=s.sub_id and l.batch_id=46;
+
+select lec_id,l.batch_id,count(l.batch_id)as total_lectures,s.title from lecture l,subject s where l.batch_id=46 and l.lec_date BETWEEN 2026-01-10 and 2026-01-20 and l.subject_id=s.sub_id  group by l.batch_id;
