@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mayank Santwani - AI/ML Engineer Resume</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    
+    .heading-font {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .resume {
+      max-width: 950px;
+      margin: 20px auto;
+      background: white;
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0F172A 0%, #1E2937 100%);
+      color: #F1F5F9;
+      padding: 2.5rem 3rem;
+      border-bottom: 4px solid #EAB308;
+    }
+
+    .section-title {
+      position: relative;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #0ea5e9;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: #0ea5e9;
+      border-radius: 9999px;
+    }
+
+    .project-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+
+    .skill-tag {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    @media print {
+      .resume {
+        box-shadow: none;
+        margin: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 py-8">
+  <div class="resume mx-auto">
+    
+    <!-- Header -->
+    <header class="header">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <h1 class="heading-font text-5xl font-bold tracking-tighter">Mayank Santwani</h1>
+          <p class="text-2xl text-sky-300 mt-1">Aspiring AI/ML Engineer</p>
+          <div class="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-sm">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-envelope text-sky-400"></i>
+              <a href="mailto:mayanksantwani640@gmail.com" class="hover:text-sky-300 transition">mayanksantwani640@gmail.com</a>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-phone text-sky-400"></i>
+              <span>+91 7698751195</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-location-dot text-sky-400"></i>
+              <span>Bhavnagar, Gujarat, India</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex flex-col items-end gap-3 text-right">
+          <div class="flex gap-4 text-2xl">
+            <a href="#" class="hover:text-sky-300 transition"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://github.com/Mayank4033/" target="_blank" class="hover:text-sky-300 transition"><i class="fa-brands fa-github"></i></a>
+            <a href="#" class="hover:text-sky-300 transition"><i class="fa-brands fa-kaggle"></i></a>
+          </div>
+          <div class="text-xs uppercase tracking-widest bg-white/10 px-4 py-2 rounded-full">
+            Fresher • Available for Full-time / Internship
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+      <!-- Left Column -->
+      <div class="col-span-2 p-8 space-y-10 bg-white">
+        
+        <!-- Professional Summary -->
+        <section>
+          <h2 class="section-title">PROFESSIONAL SUMMARY</h2>
+          <p class="text-gray-600 leading-relaxed">
+            Enthusiastic BCA graduate with a strong passion for Artificial Intelligence and Machine Learning, backed by 
+            hands-on experience in Python programming. Proficient in libraries such as NumPy, Pandas, Scikit-learn, and 
+            Matplotlib, with practical exposure to supervised and unsupervised learning algorithms through academic 
+            projects. Adept at data preprocessing, model building, and performance evaluation.
+          </p>
+        </section>
+
+        <!-- Experience -->
+        <section>
+          <h2 class="section-title">EXPERIENCE</h2>
+          <div class="mb-8">
+            <ul class="mt-3 text-gray-600 list-disc list-inside space-y-2">
+              <li>Actively seeking first professional opportunity in AI/ML domain.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Projects -->
+        <section>
+          <h2 class="section-title">PROJECTS</h2>
+          
+          <div class="grid gap-6">
+            <!-- Project 1 -->
+            <div class="project-card border border-gray-200 rounded-2xl p-6">
+              <div class="flex justify-between">
+                <h3 class="font-semibold text-lg">Watermark Removal System using Deep Learning</h3>
+              </div>
+              <p class="text-sm text-gray-500 mt-1">Python • TensorFlow • Keras • NumPy • OpenCV • U-Net Architecture</p>
+              <p class="mt-3 text-gray-600">
+                Developed a deep learning model based on Attention U-Net to automatically detect and remove visible, 
+                semi-transparent, and logo watermarks from images while preserving original content, textures, and fine details.
+              </p>
+              <div class="flex gap-2 mt-4">
+                <a href="https://github.com/Mayank4033/" target="_blank" 
+                   class="text-xs px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition inline-flex items-center gap-2">
+                  <i class="fa-brands fa-github"></i> GitHub
+                </a>
+              </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card border border-gray-200 rounded-2xl p-6">
+              <div class="flex justify-between">
+                <h3 class="font-semibold text-lg">Product Management System | Console-Based CRUD Application</h3>
+              </div>
+              <p class="text-sm text-gray-500 mt-1">Python • JSON File Handling • CRUD Operations</p>
+              <p class="mt-3 text-gray-600">
+                Developed a real-time console-based Product Management System in Python that allows users to efficiently 
+                perform CRUD operations — Add, View, Update, Delete, and Search products.
+              </p>
+              <div class="flex gap-2 mt-4">
+                <a href="https://github.com/Mayank4033/" target="_blank" 
+                   class="text-xs px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition inline-flex items-center gap-2">
+                  <i class="fa-brands fa-github"></i> GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column -->
+      <div class="bg-slate-50 p-8 space-y-10 border-l">
+        
+        <!-- Education -->
+        <section>
+          <h2 class="section-title">EDUCATION</h2>
+          <div>
+            <h3 class="font-semibold">Bachelor of Computer Applications (BCA)</h3>
+            <p class="text-sky-600">M.K.B.U. University, Bhavnagar</p>
+            <p class="text-sm text-gray-500">2023 - 2026</p>
+          </div>
+        </section>
+
+        <!-- Skills -->
+        <section>
+          <h2 class="section-title">TECHNICAL SKILLS</h2>
+          <div class="space-y-6">
+            <div>
+              <h4 class="text-xs uppercase tracking-widest text-gray-500 mb-3">Languages & Libraries</h4>
+              <div class="flex flex-wrap gap-2">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">PyTorch</span>
+                <span class="skill-tag">TensorFlow</span>
+                <span class="skill-tag">Scikit-learn</span>
+                <span class="skill-tag">NumPy</span>
+                <span class="skill-tag">Pandas</span>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="text-xs uppercase tracking-widest text-gray-500 mb-3">Tools & Technologies</h4>
+              <div class="flex flex-wrap gap-2">
+                <span class="skill-tag">Git & GitHub</span>
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">Matplotlib</span>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="text-xs uppercase tracking-widest text-gray-500 mb-3">Core Expertise</h4>
+              <div class="flex flex-wrap gap-2">
+                <span class="skill-tag">Deep Learning</span>
+                <span class="skill-tag">Computer Vision</span>
+                <span class="skill-tag">Machine Learning</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Certifications -->
+        <section>
+          <h2 class="section-title">CERTIFICATIONS</h2>
+          <div class="space-y-4 text-sm">
+            <div>
+              <p class="font-medium">Junior Software Development</p>
+              <p class="text-sky-600 text-xs">IT Experts Academy • Bhavnagar • 2025</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white/70 text-xs py-4 px-8 flex justify-between items-center">
+      <p class="no-print">Last Updated: May 2026</p>
+    </footer>
+  </div>
+</body>
+</html>
